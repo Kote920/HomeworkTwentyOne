@@ -10,7 +10,7 @@ data class ProductEntity(
     @ColumnInfo(name = "cover") val cover: String,
     @ColumnInfo(name = "price") val price: String,
     @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "favorite") val favorite: Boolean
+    @ColumnInfo(name = "favorite") val favorite: Boolean,
 )
 
 

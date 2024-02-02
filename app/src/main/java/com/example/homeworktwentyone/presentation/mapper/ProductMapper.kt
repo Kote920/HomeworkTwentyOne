@@ -1,10 +1,10 @@
 package com.example.homeworktwentyone.presentation.mapper
 
 import com.example.homeworktwentyone.domain.model.ProductResponse
-import com.example.homeworktwentyone.presentation.model.Product
+import com.example.homeworktwentyone.presentation.model.ProductUI
 
 
-fun ProductResponse.toPresentation() = Product(
+fun ProductResponse.toPresentation() = ProductUI(
     id = id,
     cover = cover,
     price = price,

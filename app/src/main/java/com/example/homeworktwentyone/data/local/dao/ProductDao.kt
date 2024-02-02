@@ -16,4 +16,7 @@ interface ProductDao {
 
     @Query("SELECT * FROM ProductEntity WHERE id = :id")
     suspend fun getProductById(id: Int): ProductEntity?
+
+    @Query("DELETE FROM ProductEntity")
+    suspend fun deleteAll()
 }

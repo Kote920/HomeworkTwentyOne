@@ -1,6 +1,8 @@
 package com.example.homeworktwentyone.di
 
 import com.example.homeworktwentyone.data.common.ConnectivityUtils
+import com.example.homeworktwentyone.data.dataSource.ProductLocalDataSource
+import com.example.homeworktwentyone.data.dataSource.ProductRemoteDataSource
 import com.example.homeworktwentyone.data.local.dao.ProductDao
 import com.example.homeworktwentyone.data.remote.service.ClothesService
 import com.example.homeworktwentyone.data.repository.GetClothesRepositoryImpl
@@ -22,11 +24,17 @@ object RepositoryModule {
         clothesService: ClothesService,
         connectivityUtils: ConnectivityUtils,
         productDao: ProductDao,
+        productLocalDataSource: ProductLocalDataSource,
+        productRemoteDataSource: ProductRemoteDataSource
 
     ): GetClothesRepository {
-        return GetClothesRepositoryImpl(clothesService,
-            connectivityUtils = connectivityUtils,
-            productDao = productDao
+        return GetClothesRepositoryImpl(
+            productLocalDataSource =  productLocalDataSource,
+            productRemoteDataSource =  productRemoteDataSource
+//            clothesService,
+//            connectivityUtils = connectivityUtils,
+//            productDao = productDao
+
 
         )
     }

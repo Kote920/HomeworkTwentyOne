@@ -2,7 +2,6 @@ package com.example.homeworktwentyone.presentation.fragments
 
 import com.example.homeworktwentyone.data.common.Resource
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -46,7 +45,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>(FragmentProductsB
     override fun bindObserves() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.productListFlow.collect(){
+                viewModel.productUIListFlow.collect(){
                     when(it){
 
                         is Resource.Loading -> {

@@ -1,82 +1,74 @@
 package com.example.homeworktwentyone.data.repository
 
-import android.util.Log.d
-import com.example.homeworktwentyone.data.common.ConnectivityUtils
 import com.example.homeworktwentyone.data.common.Resource
-import com.example.homeworktwentyone.data.local.dao.ProductDao
-import com.example.homeworktwentyone.data.local.mapper.toEntity
-import com.example.homeworktwentyone.data.local.mapper.toRemote
-import com.example.homeworktwentyone.data.remote.mapper.toDomain
-import com.example.homeworktwentyone.data.remote.service.ClothesService
+import com.example.homeworktwentyone.data.dataSource.ProductLocalDataSource
+import com.example.homeworktwentyone.data.dataSource.ProductRemoteDataSource
+import com.example.homeworktwentyone.data.mapper.toDomain
 import com.example.homeworktwentyone.domain.model.ProductResponse
 import com.example.homeworktwentyone.domain.repository.GetClothesRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class GetClothesRepositoryImpl @Inject constructor(
-    private val clothesService: ClothesService,
-    private val connectivityUtils: ConnectivityUtils,
-    private val productDao: ProductDao,
+    private val productLocalDataSource: ProductLocalDataSource,
+    private val productRemoteDataSource: ProductRemoteDataSource
 ) : GetClothesRepository {
+    override suspend fun getProducts(): Flow<Resource<List<ProductResponse>>> =
+        withContext(Dispatchers.IO) {
 
-    override suspend fun getClothesList(): Flow<Resource<List<ProductResponse>>> {
-        return flow {
-            try {
+            flow {
                 emit(Resource.Loading())
-
-                if (connectivityUtils.isNetworkAvailable()) {
-                    val response = clothesService.getClothes()
-
-                    if (response.isSuccessful) {
-                        val clothesList = response.body()!!.map {
-                            it.toDomain()
-                        }
-                        for (each in clothesList) {
-                            insertProduct(each)
-                        }
-                        emit(Resource.Success(clothesList))
-
+                val productLocalList = getProductsFromLocal()
+                if (productLocalList.isNotEmpty()) {
+                    if (productLocalDataSource.isExpired()) {
+                        emit(Resource.Success(getProductsFromRemote()))
                     } else {
-                        emit(Resource.Failed("Request failed"))
+                        emit(Resource.Success(productLocalList))
                     }
                 } else {
-
-                    emit(Resource.Success(getALl()))
-
+                    emit(Resource.Success(getProductsFromRemote()))
                 }
-            } catch (e: Exception) {
-                emit(Resource.Failed("Request failed"))
+
             }
-        }
-    }
-
-    override suspend fun insertProduct(product: ProductResponse) {
-        productDao.insertProduct(product = product.toEntity())
-    }
-
-    override suspend fun getALl(): List<ProductResponse> {
-        return productDao.getAllProducts().map {
-            it.toRemote().toDomain()
 
         }
-    }
 
-    override suspend fun getById(id: Int): Flow<Resource<ProductResponse>> {
 
-        return flow {
-            emit(Resource.Loading())
-            val prod = productDao.getProductById(id)
-            if(prod != null){
-                emit(Resource.Success(prod.toRemote().toDomain()))
-            }else{
-                emit(Resource.Failed("Not in database"))
-                getClothesList()
+    override suspend fun getProductsFromLocal(): List<ProductResponse> =
+        withContext(Dispatchers.IO) {
+            productLocalDataSource.getProducts().map {
+                it.toDomain()
             }
+
         }
-    }
+
+    override suspend fun getProductsFromRemote(): List<ProductResponse> =
+        withContext(Dispatchers.IO) {
+            when (val result = productRemoteDataSource.getProducts()) {
+                is Resource.Success -> {
+                    val productRemoteList = result.responseData
+                    if (productRemoteList.isNotEmpty()) {
+                        productLocalDataSource.insertProducts(productRemoteList.map {
+                            it.toDomain()
+                        })
+                        result.responseData.map {
+                            it.toDomain()
+                        }
+                    } else {
+                        getProductsFromLocal()
+                    }
+                }
+
+                else -> {
+                    listOf()
+                }
+            }
+
+        }
 
 }
-
 
 

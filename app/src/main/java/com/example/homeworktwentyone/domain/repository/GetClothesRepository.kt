@@ -6,12 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetClothesRepository {
 
-    suspend fun getClothesList(): Flow<Resource<List<ProductResponse>>>
+    suspend fun getProducts(): Flow<Resource<List<ProductResponse>>>
 
-    suspend fun insertProduct(product: ProductResponse)
+    suspend fun getProductsFromLocal(): List<ProductResponse>
+    suspend fun getProductsFromRemote(): List<ProductResponse>
 
-    suspend fun getALl(): List<ProductResponse>
-
-    suspend fun getById(id: Int): Flow<Resource<ProductResponse>>
+//    suspend fun getById(id: Int): Flow<Resource<ProductResponse>>
 
 }

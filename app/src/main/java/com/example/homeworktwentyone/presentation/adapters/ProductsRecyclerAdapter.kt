@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.homeworktwentyone.R
 import com.example.homeworktwentyone.databinding.ItemRecyclerviewBinding
 import com.example.homeworktwentyone.presentation.extension.loadImage
-import com.example.homeworktwentyone.presentation.model.Product
+import com.example.homeworktwentyone.presentation.model.ProductUI
 
-class ProductsRecyclerAdapter(private val onItemClick: (Product) -> Unit) :
-    ListAdapter<Product, ProductsRecyclerAdapter.ProductsViewHolder>(ProductsDiffUtil()) {
+class ProductsRecyclerAdapter(private val onItemClick: (ProductUI) -> Unit) :
+    ListAdapter<ProductUI, ProductsRecyclerAdapter.ProductsViewHolder>(ProductsDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ProductsViewHolder(
         ItemRecyclerviewBinding.inflate(
@@ -27,7 +27,7 @@ class ProductsRecyclerAdapter(private val onItemClick: (Product) -> Unit) :
 
     inner class ProductsViewHolder(private val binding: ItemRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private lateinit var model: Product
+        private lateinit var model: ProductUI
 
         fun bind() {
             model = currentList[adapterPosition]
@@ -52,12 +52,12 @@ class ProductsRecyclerAdapter(private val onItemClick: (Product) -> Unit) :
 
     }
 
-    class ProductsDiffUtil : DiffUtil.ItemCallback<Product>() {
-        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+    class ProductsDiffUtil : DiffUtil.ItemCallback<ProductUI>() {
+        override fun areItemsTheSame(oldItem: ProductUI, newItem: ProductUI): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+        override fun areContentsTheSame(oldItem: ProductUI, newItem: ProductUI): Boolean {
             return oldItem == newItem
         }
     }

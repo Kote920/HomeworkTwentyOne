@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class GetClothesUseCase @Inject constructor(private val repository: GetClothesRepository){
 
-        suspend operator fun invoke() = repository.getClothesList()
+        suspend operator fun invoke() = repository.getProducts()
 
 
 }

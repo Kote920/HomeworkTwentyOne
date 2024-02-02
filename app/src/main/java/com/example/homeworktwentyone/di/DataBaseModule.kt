@@ -20,7 +20,8 @@ object DataBaseModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java, "Homework-twenty"
-        ).build()
+        ).addMigrations()
+            .build()
     }
     @Singleton
     @Provides

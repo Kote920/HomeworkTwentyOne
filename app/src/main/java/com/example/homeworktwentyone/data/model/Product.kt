@@ -1,4 +1,6 @@
-package com.example.homeworktwentyone.presentation.model
+package com.example.homeworktwentyone.data.model
+
+import com.squareup.moshi.Json
 
 data class Product(
     val id: Int,
@@ -6,5 +8,4 @@ data class Product(
     val price: String,
     val title: String,
     val favorite: Boolean
-) {
-}
+)
