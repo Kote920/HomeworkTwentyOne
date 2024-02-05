@@ -1,7 +1,7 @@
 package com.example.homeworktwentyone.di
 
 import android.content.Context
-import com.example.homeworktwentyone.data.dataSource.PreferencesHelper
+import com.example.homeworktwentyone.data.common.PreferencesHelper
 import com.example.homeworktwentyone.data.dataSource.ProductDataSource
 import com.example.homeworktwentyone.data.dataSource.ProductLocalDataSource
 import com.example.homeworktwentyone.data.dataSource.ProductRemoteDataSource
@@ -12,7 +12,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module

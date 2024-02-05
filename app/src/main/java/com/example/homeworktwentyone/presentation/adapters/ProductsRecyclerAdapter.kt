@@ -1,5 +1,6 @@
 package com.example.homeworktwentyone.presentation.adapters
 
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -12,6 +13,7 @@ import com.example.homeworktwentyone.presentation.model.ProductUI
 
 class ProductsRecyclerAdapter(private val onItemClick: (ProductUI) -> Unit) :
     ListAdapter<ProductUI, ProductsRecyclerAdapter.ProductsViewHolder>(ProductsDiffUtil()) {
+    private var filteredProducts: List<ProductUI> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ProductsViewHolder(
         ItemRecyclerviewBinding.inflate(
@@ -34,9 +36,10 @@ class ProductsRecyclerAdapter(private val onItemClick: (ProductUI) -> Unit) :
             binding.apply {
                 tvDescription.text = model.title
                 tvPrice.text = model.price
-                if(model.favorite){
+                tvCategory.text = model.category
+                if (model.favorite) {
                     ibFavorite.setBackgroundResource(R.drawable.bg_circle_green)
-                }else{
+                } else {
                     ibFavorite.setBackgroundResource(R.drawable.bg_circle_white)
                 }
                 ivProduct.loadImage(model.cover)
@@ -44,7 +47,8 @@ class ProductsRecyclerAdapter(private val onItemClick: (ProductUI) -> Unit) :
             }
             listeners()
         }
-        private fun listeners(){
+
+        private fun listeners() {
             binding.root.setOnClickListener {
                 onItemClick.invoke(model)
             }
@@ -60,5 +64,19 @@ class ProductsRecyclerAdapter(private val onItemClick: (ProductUI) -> Unit) :
         override fun areContentsTheSame(oldItem: ProductUI, newItem: ProductUI): Boolean {
             return oldItem == newItem
         }
+    }
+
+    fun filterByCategory(category: String) {
+        filteredProducts = if (category.isBlank()) {
+            currentList.toList()
+        } else {
+            currentList.filter { it.category.equals(category, ignoreCase = true) }
+        }
+        submitList(filteredProducts)
+    }
+
+    fun resetFilter(list: List<ProductUI>) {
+        filteredProducts = currentList.toList()
+        submitList(list)
     }
 }

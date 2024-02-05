@@ -16,8 +16,8 @@ class ProductRemoteDataSource @Inject constructor(private val clothesService: Cl
     ProductDataSource.Remote {
     override suspend fun getProducts(): Resource<List<Product>> = withContext(Dispatchers.IO) {
         try {
-            val response = clothesService.getClothes()
 
+            val response = clothesService.getClothes()
             if (response.isSuccessful) {
                 Resource.Success(response.body()!!.map {
                     it.toExternalModel()

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.homeworktwentyone.data.local.dao.ProductDao
 import com.example.homeworktwentyone.data.local.database.AppDatabase
+import com.example.homeworktwentyone.data.local.migration.Migration_1_2
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,9 +21,11 @@ object DataBaseModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java, "Homework-twenty"
-        ).addMigrations()
+        ).addMigrations(Migration_1_2)
             .build()
     }
+    //.addMigrations(Migration_1_2)
+
     @Singleton
     @Provides
     fun provideProductDao(appDatabase: AppDatabase): ProductDao {

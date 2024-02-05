@@ -1,5 +1,6 @@
 package com.example.homeworktwentyone.data.dataSource
 
+import com.example.homeworktwentyone.data.common.PreferencesHelper
 import com.example.homeworktwentyone.data.local.dao.ProductDao
 import com.example.homeworktwentyone.data.local.mapper.toEntity
 import com.example.homeworktwentyone.data.local.mapper.toExternalModel
@@ -21,7 +22,12 @@ class ProductLocalDataSource @Inject constructor(
 
     override suspend fun getProducts(): List<Product> =
         withContext(Dispatchers.IO) {
-            productDao.getAllProducts().map { it.toExternalModel() }
+            val result = productDao.getAllProducts()
+            if(result.isNotEmpty()){
+               result.map { it.toExternalModel() }
+            }else{
+                emptyList()
+            }
 
         }
 

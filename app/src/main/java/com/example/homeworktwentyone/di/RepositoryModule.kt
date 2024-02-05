@@ -5,7 +5,7 @@ import com.example.homeworktwentyone.data.dataSource.ProductLocalDataSource
 import com.example.homeworktwentyone.data.dataSource.ProductRemoteDataSource
 import com.example.homeworktwentyone.data.local.dao.ProductDao
 import com.example.homeworktwentyone.data.remote.service.ClothesService
-import com.example.homeworktwentyone.data.repository.GetClothesRepositoryImpl
+import com.example.homeworktwentyone.data.repository.GetPoductsRepository
 import com.example.homeworktwentyone.domain.repository.GetClothesRepository
 import dagger.Module
 import dagger.Provides
@@ -28,9 +28,10 @@ object RepositoryModule {
         productRemoteDataSource: ProductRemoteDataSource
 
     ): GetClothesRepository {
-        return GetClothesRepositoryImpl(
+        return GetPoductsRepository(
             productLocalDataSource =  productLocalDataSource,
-            productRemoteDataSource =  productRemoteDataSource
+            productRemoteDataSource =  productRemoteDataSource,
+            connectivityUtils = connectivityUtils
 //            clothesService,
 //            connectivityUtils = connectivityUtils,
 //            productDao = productDao

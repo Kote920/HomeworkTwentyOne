@@ -9,7 +9,8 @@ fun ProductResponse.toEntity() = ProductEntity(
     cover = cover,
     price = price,
     title = title,
-    favorite = favorite
+    favorite = favorite,
+    category = category
 )
 
 fun ProductEntity.toExternalModel() = Product(
@@ -17,7 +18,8 @@ fun ProductEntity.toExternalModel() = Product(
     cover = cover,
     price = price,
     title = title,
-    favorite = favorite
+    favorite = favorite,
+    category = category
 )
 
 

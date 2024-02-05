@@ -1,10 +1,11 @@
 package com.example.homeworktwentyone.presentation.model
 
 data class ProductUI(
-    val id: Int,
-    val cover: String,
-    val price: String,
-    val title: String,
-    val favorite: Boolean
+    var id: Int,
+    var cover: String,
+    var price: String,
+    var title: String,
+    var favorite: Boolean,
+    var category: String
 ) {
 }

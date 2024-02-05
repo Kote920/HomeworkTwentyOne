@@ -4,14 +4,17 @@ import com.squareup.moshi.Json
 
 data class ProductResponseDto(
     @Json(name = "id")
-    val id : Int,
+    val id: Int,
     @Json(name = "cover")
-    val cover : String,
+    val cover: String,
     @Json(name = "price")
-    val price : String,
+    val price: String,
     @Json(name = "title")
-    val title : String,
+    val title: String,
     @Json(name = "favorite")
-    val favorite : Boolean
+    val favorite: Boolean,
+    @Json(name = "category")
+    val category: String
+
 
 )
